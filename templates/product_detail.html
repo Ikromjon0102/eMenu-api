@@ -1,0 +1,9 @@
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+<img src="{{ product.product_image.url }}" alt="">
+
+{% for variation in variations %}
+    <div>
+        <p>Size: {{ variation.size }} | Price: {{ variation.price }}</p>
+    </div>
+{% endfor %}

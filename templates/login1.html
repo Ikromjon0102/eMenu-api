@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Login</title>
+    <style>
+        body {
+            background-color: #141621;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 60px;
+            font-weight: bold;
+        }
+
+        .otp-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .otp-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .otp-container a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .otp-inputs {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .otp-inputs input {
+            width: 40px;
+            height: 50px;
+            margin: 0 5px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            background-color: transparent;
+            color: white;
+        }
+
+        .otp-inputs input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">FoodMe</div>
+    <div class="otp-container">
+        <h2>Kodni Kiriting</h2>
+        <p><a href="https://t.me/foodme_robot" target="_top">@foodme_robot</a> telegram botiga kiring va 1 daqiqalik kodingizni oling.</p>
+        <form class="otp-form" action="{% url 'login' %}" method="POST"> {% csrf_token %}
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" name="digit1" oninput="moveToNext(this, 'digit2')" required>
+                <input type="text" maxlength="1" name="digit2" oninput="moveToNext(this, 'digit3')" required>
+                <input type="text" maxlength="1" name="digit3" oninput="moveToNext(this, 'digit4')" required>
+                <input type="text" maxlength="1" name="digit4" oninput="moveToNext(this, 'digit5')" required>
+                <input type="text" maxlength="1" name="digit5" oninput="moveToNext(this, 'digit6')" required>
+                <input type="text" maxlength="1" name="digit6" oninput="submitIfComplete()" required>
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+function submitIfComplete() {
+    const inputs = document.querySelectorAll('.otp-inputs input');
+    let filled = true;
+    let otp_code = '';
+
+    inputs.forEach(input => {
+        if (input.value.length !== 1) {
+            filled = false;
+        }
+        otp_code += input.value;
+    });
+
+    if (filled) {
+        // Fetch API yordamida ma'lumotni yuborish
+        fetch('/api_login/', {  // URL ni to'g'ri yozganingizga ishonch hosil qiling
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value  // CSRF tokenini yuborish
+            },
+            body: JSON.stringify({ otp_code: otp_code })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            console.log('Successfully logged in:', data);
+            window.location.href = '/success_page/';  // muvaffaqiyatli sahifaga yo'naltirish
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+}
+
+        function moveToNext(current, nextFieldID) {
+            if (current.value.length >= current.maxLength) {
+                document.getElementsByName(nextFieldID)[0].focus();
+            }
+        }
+        function submitIfComplete() {
+        const inputs = document.querySelectorAll('.otp-inputs input');
+        let filled = true;
+        inputs.forEach(input => {
+            if (input.value.length !== 1) {
+                filled = false;
+            }
+        });
+        if (filled) {
+            document.querySelector('.otp-form').submit();
+            }
+        }
+        document.querySelector('.otp-form').addEventListener('paste', function(e) {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData('text');
+            const inputs = document.querySelectorAll('.otp-inputs input');
+
+            if (paste.length === inputs.length) {
+                inputs.forEach((input, index) => {
+                    input.value = paste[index];
+                });
+                submitIfComplete();
+            }
+        });
+
+
+    </script>
+
+</body>
+</html>

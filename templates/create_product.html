@@ -1,0 +1,46 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ product_form.as_p }}
+
+    <h3>Variants</h3>
+    {{ formset.management_form }}
+    <div id="formset-container">
+        {% for form in formset %}
+            <div class="formset-row">
+                {{ form.as_p }}
+                <button type="button" class="remove-form">Remove</button>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-form">Add Variant</button>
+
+    <button type="submit">Save Product and Variants</button>
+</form>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        let formsetContainer = document.getElementById('formset-container');
+        let addFormBtn = document.getElementById('add-form');
+        let totalForms = document.getElementById('id_variants-TOTAL_FORMS');
+        let formIndex = parseInt(totalForms.value);
+
+        addFormBtn.addEventListener('click', function () {
+            let newForm = formsetContainer.children[0].cloneNode(true);
+            let formRegex = /variants-(\d+)-/g;
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `variants-${formIndex}-`);
+            formsetContainer.appendChild(newForm);
+            totalForms.setAttribute('value', ++formIndex);
+
+            // Clear input fields of the newly added form
+            let inputs = newForm.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+        });
+
+        formsetContainer.addEventListener('click', function (e) {
+            if (e.target && e.target.matches('button.remove-form')) {
+                e.target.closest('.formset-row').remove();
+                totalForms.setAttribute('value', --formIndex);
+            }
+        });
+    });
+</script>

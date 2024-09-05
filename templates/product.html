@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<a href="{% url 'create_product' %}">Create Product</a>
+
+
+<h1>Mahsulotlar</h1>
+<ul>
+{% for i in products %}
+
+    <li>
+        <a href="{% url 'product' i.id %}">{{ i.name }}</a>
+    </li>
+
+{% endfor %}
+</ul>
+
+
+</body>
+</html>
