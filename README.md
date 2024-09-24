@@ -75,6 +75,7 @@ The primary goal of **FoodMe** is to digitize restaurant menus and streamline th
 
 ```bash
 pip install -r requirements.txt
+```
 
 
 3. Setup the PostgreSQL database:
