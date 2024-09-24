@@ -65,36 +65,36 @@ The primary goal of **FoodMe** is to digitize restaurant menus and streamline th
 - PostgreSQL
 
 ### Installation Steps
-1. Clone the repository:
+#### 1. Clone the repository:
 ```bash
 git clone https://github.com/username/foodme.git
 ```
 
 
-2. Install dependencies:
+#### 2. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
 
-3. Setup the PostgreSQL database:
+#### 3. Setup the PostgreSQL database:
 
 ```
 psql -U postgres -c "CREATE DATABASE foodme_db;"
 ```
 
-4. Run database migrations:
+#### 4. Run database migrations:
 ```
 python manage.py migrate
 ```
 
-5. Create a superuser:
+#### 5. Create a superuser:
 ```
 python manage.py createsuperuser
 ```
 
-6. Start the development server:
+#### 6. Start the development server:
 ```
 python manage.py runserver
 ```
