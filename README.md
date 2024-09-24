@@ -68,7 +68,7 @@ The primary goal of **FoodMe** is to digitize restaurant menus and streamline th
 1. Clone the repository:
 ```bash
 git clone https://github.com/username/foodme.git
-
+```
 
 
 2. Install dependencies:
