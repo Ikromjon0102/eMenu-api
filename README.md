@@ -60,7 +60,7 @@ The primary goal of **FoodMe** is to digitize restaurant menus and streamline th
 ## Installation & Setup
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.10+
 - Django 4.x
 - PostgreSQL
 
